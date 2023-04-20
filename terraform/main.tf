@@ -124,73 +124,12 @@ locals {
   ])
 }
 
-#locals {
-#  master_config_yaml = replace(yamlencode(
-#    [for entry in module.master.host_entries :
-#      {
-#        ssh : entry
-#        role : "master"
-#      }
-#    ]),
-#  "/((?:^|\n)[\\s-]*)\"([\\w-]+)\":/", "$1$2:")
+#resource "tls_private_key" "k0sctl_priv_key" {
+#  algorithm = "RSA"
+#  rsa_bits  = 4096
 #}
+# tls_private_key.k0sctl_priv_key.public_key_openssh
 
-#locals {
-#  master_config_yaml = replace(yamlencode(
-#    [
-#      for entry in module.master.host_entries :
-#      {
-#        ssh : entry
-#        role : "master"
-#      }
-#    ]),
-#  "/((?:^|\n)[\\s-]*)\"([\\w-]+)\":/", "$1$2:")
-#}
-
-
-#output "test2" {
-#  value = local.master_config_yaml
-#}
-
-#output "test3" {
-#  value = replace(yamlencode({
-#    apiVersion : "k0sctl.k0sproject.io / v1beta1"
-#    kind : "Cluster"
-#    metadata : {
-#      name : "k0s-cluster"
-#    }
-#    spec : {
-#      hosts : local.master_config_yaml
-#    }
-#    k0s : {
-#      version : "1.26.3+k0s.0"
-#      dynamicConfig : false
-#    }
-#    })
-#  , "/((?:^|\n)[\\s-]*)\"([\\w-]+)\":/", "$1$2:")
-#}
-
-#test = yamlencode(module.master.*.master_ip)
-
-
-#resource "local_file" "k0sctlconfig" {
-#  content = replace(yamlencode({
-#    apiVersion : "k0sctl.k0sproject.io/v1beta1"
-#    kind : "Cluster"
-#    metadata : {
-#      name : "k0s-cluster"
-#    }
-#    spec : {
-#      hosts : local.master_config_yaml
-#    }
-#    k0s : {
-#      version : "1.26.3+k0s.0"
-#      dynamicConfig : false
-#    }
-#    })
-#  , "/((?:^|\n)[\\s-]*)\"([\\w-]+)\":/", "$1$2:")
-#  filename = "k0sctl.yaml"
-#}
 resource "local_file" "k0sctlconfig" {
   content = replace(yamlencode({
     apiVersion : "k0sctl.k0sproject.io/v1beta1"
